@@ -514,11 +514,9 @@ final class WP_Term_Order {
 		if ( ! empty( $_GET['orderby'] ) && ! empty( $_GET['taxonomy'] ) ) {
 			return $orderby;
 		}
-
-		// Maybe force `orderby`
-		if ( empty( $args['orderby'] ) || empty( $orderby ) || ( 'order' === $args['orderby'] ) || in_array( $orderby, array( 'name', 't.name' ) ) ) {
-			$orderby = 'tt.order';
-		} elseif ( 't.name' === $orderby ) {
+	
+		// Apply `order` if no `orderby` is set or `orderby` is set to `order` specifically
+		if ( empty( $args['orderby'] ) || empty( $orderby ) || 'order' === $args['orderby'] ) {
 			$orderby = 'tt.order, t.name';
 		}
 
