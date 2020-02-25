@@ -434,7 +434,7 @@ final class WP_Term_Order {
 			<label for="order">
 				<?php esc_html_e( 'Order', 'wp-term-order' ); ?>
 			</label>
-			<input type="number" pattern="[0-9.]+" name="order" id="order" value="0" size="11">
+			<input type="number" min="0" name="order" id="order" value="0" size="11">
 			<p class="description">
 				<?php esc_html_e( 'Set a specific order by entering a number (1 for first, etc.) in this field.', 'wp-term-order' ); ?>
 			</p>
@@ -460,7 +460,7 @@ final class WP_Term_Order {
 				</label>
 			</th>
 			<td>
-				<input name="order" id="order" type="text" value="<?php echo $this->get_term_order( $term ); ?>" size="11" />
+				<input type="number" min="0" name="order" id="order" value="<?php echo $this->get_term_order( $term ); ?>" size="11" />
 				<p class="description">
 					<?php esc_html_e( 'Terms are usually ordered alphabetically, but you can choose your own order by entering a number (1 for first, etc.) in this field.', 'wp-term-order' ); ?>
 				</p>
@@ -489,7 +489,7 @@ final class WP_Term_Order {
 				<label>
 					<span class="title"><?php esc_html_e( 'Order', 'wp-term-order' ); ?></span>
 					<span class="input-text-wrap">
-						<input type="number" pattern="[0-9.]+" class="ptitle" name="order" value="" size="11">
+						<input type="number" min="0" class="ptitle" name="order" value="" size="11">
 					</span>
 				</label>
 			</div>
