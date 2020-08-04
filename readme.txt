@@ -1,12 +1,12 @@
 === WP Term Order ===
-Contributors: johnjamesjacoby, stuttter
-Tags: taxonomy, term, order
+Contributors:      johnjamesjacoby, stuttter
+Tags:              taxonomy, term, order
+License:           GPLv2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Donate link:       https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9Q4F4EL5YJ62J
 Requires at least: 4.3
-Tested up to: 4.4
-Stable tag: 0.1.4
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9Q4F4EL5YJ62J
+Tested up to:      5.5
+Stable tag:        1.0.0
 
 == Description ==
 
@@ -17,8 +17,6 @@ WP Term Order allows users to order any visible category, tag, or taxonomy term 
 = Also checkout =
 
 * [WP Chosen](https://wordpress.org/plugins/wp-chosen/ "Make long, unwieldy select boxes much more user-friendly.")
-* [WP Event Calendar](https://wordpress.org/plugins/wp-event-calendar/ "The best way to manage events in WordPress.")
-* [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Metadata, for taxonomy terms.")
 * [WP Term Authors](https://wordpress.org/plugins/wp-term-authors/ "Authors for categories, tags, and other taxonomy terms.")
 * [WP Term Colors](https://wordpress.org/plugins/wp-term-colors/ "Pretty colors for categories, tags, and other taxonomy terms.")
 * [WP Term Icons](https://wordpress.org/plugins/wp-term-icons/ "Pretty icons for categories, tags, and other taxonomy terms.")
@@ -59,6 +57,12 @@ The WordPress support forums: https://wordpress.org/support/plugin/wp-term-order
 http://github.com/stuttter/wp-term-order/
 
 == Changelog ==
+
+= 1.0.0 =
+* Do action when order is updated
+
+= 0.1.5 =
+* Version bumps and updated readme
 
 = 0.1.4 =
 * Fix order saving in non-fancy mode

@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Plugin Name: WP Term Order
- * Plugin URI:  https://wordpress.org/plugins/wp-term-order/
- * Author:      John James Jacoby
- * Author URI:  https://jjj.blog/
- * Version:     1.0.0-dev
- * Description: Sort taxonomy terms, your way
- * License:     GPL v2 or later
+ * Plugin Name:       WP Term Order
+ * Plugin URI:        https://wordpress.org/plugins/wp-term-order/
+ * Description:       Sort taxonomy terms, your way
+ * Author:            John James Jacoby
+ * Author URI:        https://jjj.blog/
+ * Text Domain:       wp-term-order
+ * License:           GPL v2 or later
+ * Requires PHP:      5.6.20
+ * Requires at least: 4.3
+ * Version:           1.0.0
  */
 
 // Exit if accessed directly
@@ -26,12 +29,12 @@ final class WP_Term_Order {
 	/**
 	 * @var string Plugin version
 	 */
-	public $version = '0.1.4';
+	public $version = '1.0.0';
 
 	/**
 	 * @var string Database version
 	 */
-	public $db_version = 201510280002;
+	public $db_version = 202007300001;
 
 	/**
 	 * @var string Database version
@@ -145,6 +148,21 @@ final class WP_Term_Order {
 	}
 
 	/** Assets ****************************************************************/
+
+	public function taxonomy_supported( $taxonomy ) {
+
+		if ( is_array( $taxonomy ) ) {
+			foreach ( $taxonomy as $tax ) {
+				if ( ! in_array( $tax, $this->taxonomies ) ) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		return in_array( $taxonomy, $this->taxonomies );
+
+	}
 
 	/**
 	 * Enqueue quick-edit JS
@@ -346,6 +364,7 @@ final class WP_Term_Order {
 			? (int) $_POST['order']
 			: 0;
 
+		// No cache clean required
 		self::set_term_order( $term_id, $taxonomy, $order );
 	}
 
@@ -363,8 +382,13 @@ final class WP_Term_Order {
 	public static function set_term_order( $term_id = 0, $taxonomy = '', $order = 0, $clean_cache = false ) {
 		global $wpdb;
 
-		// Update the database row
-		$wpdb->update(
+		/*
+		 * Update the database row
+		 *
+		 * We cannot call wp_update_term() here because it would cause recursion,
+		 * and also the database columns are hardcoded and we can't modify them.
+		 */
+		$success = $wpdb->update(
 			$wpdb->term_taxonomy,
 			array(
 				'order' => $order
@@ -375,9 +399,15 @@ final class WP_Term_Order {
 			)
 		);
 
-		// Maybe clean the term cache
-		if ( true === $clean_cache ) {
-			clean_term_cache( $term_id, $taxonomy );
+		// Only execute action and clean cache when update succeeds
+		if ( ! empty( $success ) ) {
+
+			do_action( 'wp_term_order_set_term_order', $term_id, $taxonomy, $order );
+
+			// Maybe clean the term cache
+			if ( true === $clean_cache ) {
+				clean_term_cache( $term_id, $taxonomy );
+			}
 		}
 	}
 
@@ -509,6 +539,10 @@ final class WP_Term_Order {
 	 * @return string
 	 */
 	public function get_terms_orderby( $orderby = 'name', $args = array() ) {
+
+		if ( ! $this->taxonomy_supported( $args['taxonomy'] ) ) {
+			return $orderby;
+		}
 
 		// Do not override if being manually controlled
 		if ( ! empty( $_GET['orderby'] ) && ! empty( $_GET['taxonomy'] ) ) {
